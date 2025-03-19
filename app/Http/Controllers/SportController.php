@@ -7,9 +7,21 @@ use Illuminate\Http\Request;
 
 class SportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $sports = Sport::all();
+        $query = Sport::query();
+    
+        // 🔍 Filtrer par nom
+        if ($request->filled('nom')) {
+            $query->where('nom', 'like', '%' . $request->nom . '%');
+        }
+
+        // 🔼🔽 Gestion du Tri
+        $sortBy = $request->get('sort_by', 'nom'); // Critère de tri (par défaut "nom")
+        $sortOrder = $request->get('sort_order', 'asc'); // Ordre de tri (par défaut "asc")
+
+        $query->orderBy($sortBy, $sortOrder);
+        $sports = $query->paginate(10); 
         return view('sports.index', compact('sports'));
     }
 
