@@ -7,6 +7,8 @@ use App\Http\Controllers\JoueurController;
 use App\Http\Controllers\MatchController;
 use App\Http\Controllers\ResultatController;
 use App\Http\Controllers\ClassementController;
+use App\Http\Controllers\AuthController;
+
 
 
 Route::get('/', function () {
@@ -16,14 +18,19 @@ Route::get('/', function () {
 
 
 // Groupes de routes protégées par l'authentification
-// Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::resource('sports', SportController::class);
     Route::resource('equipes', EquipeController::class);
     Route::resource('joueurs', JoueurController::class);
-    Route::resource('matchs', MatchController::class);
+Route::resource('matchs', MatchController::class);
     Route::resource('resultats', ResultatController::class);
     Route::resource('classements', ClassementController::class);
     Route::get('/sports/{id}/confirmDelete', [SportController::class, 'confirmDelete'])->name('sports.confirmDelete');
     Route::delete('/sports/{id}', [SportController::class, 'destroy'])->name('sports.destroy');
 
-// });
+});
+
+
+Route::get('login', [AuthController::class, "login"])->name("login");
+Route::post('toLogin', [AuthController::class, "toLogin"])->name("toLogin");
+Route::delete('/logout', [AuthController::class, "logout"])->name("logout");

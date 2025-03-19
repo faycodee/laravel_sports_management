@@ -11,6 +11,8 @@ class Matche extends Model
 
     protected $fillable = ['equipe1_id', 'equipe2_id', 'date_match', 'lieu'];
 
+    protected $table = 'matchs'; // Spécifiez le nom de la table
+
     public function equipe1()
     {
         return $this->belongsTo(Equipe::class, 'equipe1_id');

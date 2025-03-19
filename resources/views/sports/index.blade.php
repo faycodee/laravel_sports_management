@@ -6,10 +6,10 @@
         <a href="{{ route('sports.create') }}" class="btn btn-primary">Ajouter un Sport</a>
 
         <form action="{{ route('sports.index') }}" method="GET" class="mt-3">
-            <div class="form-row">
+            <div class="form-row " style="display: flex; justify-content: space-between;">
                 <div class="form-group col-md-4">
-                    <label for="nom">Nom:</label>
-                    <input type="text" name="nom" id="nom" class="form-control" value="{{ request('nom') }}">
+                    <label for="search">search</label>
+                    <input placeholder="search by Nom ..." type="text" name="nom" id="nom" class="form-control" value="{{ request('nom') }}">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="sort_by">Trier par:</label>
@@ -26,7 +26,7 @@
                     </select>
                 </div>
             </div>
-            <button type="submit" class="btn btn-secondary">Rechercher</button>
+           <br> <button type="submit" class="btn btn-secondary">Appliquer</button>
         </form>
 
         <table class="table table-striped mt-3">

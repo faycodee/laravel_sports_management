@@ -2,26 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Joueur;
+use App\Models\Equipe;
 use Illuminate\Http\Request;
 
 class JoueurController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Joueur::query();
+
+        // Filtrer par nom
+        if ($request->filled('nom')) {
+            $query->where('nom', 'like', '%' . $request->nom . '%');
+        }
+
+        // Filtrer par équipe
+        if ($request->filled('equipe_id')) {
+            $query->where('equipe_id', $request->equipe_id);
+        }
+
+        // Gestion du tri
+        $sortBy = $request->get('sort_by', 'nom'); // Critère de tri (par défaut "nom")
+        $sortOrder = $request->get('sort_order', 'asc'); // Ordre de tri (par défaut "asc")
+
+        $query->orderBy($sortBy, $sortOrder);
+        $joueurs = $query->paginate(10);
+
+        return view('joueurs.index', compact('joueurs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $equipes = Equipe::all();
+        return view('joueurs.create', compact('equipes'));
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -39,35 +54,33 @@ class JoueurController extends Controller
     }
     
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Joueur $joueur)
     {
-        //
+        return view('joueurs.show', compact('joueur'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Joueur $joueur)
     {
-        //
+        $equipes = Equipe::all();
+        return view('joueurs.edit', compact('joueur', 'equipes'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Joueur $joueur)
     {
-        //
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'date_naissance' => 'required|date',
+            'equipe_id' => 'required|exists:equipes,id',
+        ]);
+
+        $joueur->update($request->all());
+        return redirect()->route('joueurs.index')->with('success', 'Joueur mis à jour avec succès.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Joueur $joueur)
     {
-        //
+        $joueur->delete();
+        return redirect()->route('joueurs.index')->with('success', 'Joueur supprimé avec succès.');
     }
 }

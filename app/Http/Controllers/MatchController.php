@@ -2,70 +2,78 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Matche;
+use App\Models\Equipe;
 use Illuminate\Http\Request;
 
 class MatchController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Matche::query();
+
+        // Filtrer par équipe
+        if ($request->filled('equipe_id')) {
+            $query->where('equipe1_id', $request->equipe_id)
+                  ->orWhere('equipe2_id', $request->equipe_id);
+        }
+
+        // Gestion du tri
+        $sortBy = $request->get('sort_by', 'date_match'); // Critère de tri (par défaut "date_match")
+        $sortOrder = $request->get('sort_order', 'asc'); // Ordre de tri (par défaut "asc")
+
+        $query->orderBy($sortBy, $sortOrder);
+        $matchs = $query->paginate(10);
+
+        return view('matchs.index', compact('matchs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $equipes = Equipe::all();
+        return view('matchs.create', compact('equipes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
-            'equipe_a_id' => 'required|exists:equipes,id',
-            'equipe_b_id' => 'required|exists:equipes,id|different:equipe_a_id',
-            'date_match' => 'required|date|after_or_equal:today',
+            'equipe1_id' => 'required|exists:equipes,id',
+            'equipe2_id' => 'required|exists:equipes,id',
+            'date_match' => 'required|date',
+            'lieu' => 'required|string|max:255',
         ]);
-    
+
         Matche::create($request->all());
-    
-        return redirect()->route('matchs.index')->with('success', 'Match programmé avec succès.');
-    }
-    
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        return redirect()->route('matchs.index')->with('success', 'Match ajouté avec succès.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function show(Matche $match)
     {
-        //
+        return view('matchs.show', compact('match'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function edit(Matche $match)
     {
-        //
+        $equipes = Equipe::all();
+        return view('matchs.edit', compact('match', 'equipes'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function update(Request $request, Matche $match)
     {
-        //
+        $request->validate([
+            'equipe1_id' => 'required|exists:equipes,id',
+            'equipe2_id' => 'required|exists:equipes,id',
+            'date_match' => 'required|date',
+            'lieu' => 'required|string|max:255',
+        ]);
+
+        $match->update($request->all());
+        return redirect()->route('matchs.index')->with('success', 'Match mis à jour avec succès.');
+    }
+
+    public function destroy(Matche $match)
+    {
+        $match->delete();
+        return redirect()->route('matchs.index')->with('success', 'Match supprimé avec succès.');
     }
 }
