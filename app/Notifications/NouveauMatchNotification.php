@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 use App\Models\Matche;
 
 class NouveauMatchNotification extends Notification implements ShouldQueue
@@ -29,8 +30,8 @@ class NouveauMatchNotification extends Notification implements ShouldQueue
             ->subject('Nouveau Match Programmé ⚽')
             ->greeting('Bonjour !')
             ->line("Un nouveau match a été programmé entre **{$this->matche->equipe1->nom}** et **{$this->matche->equipe2->nom}**.")
-            ->line("Date : **{$this->matche->date}**")
-            ->line("Heure : **{$this->matche->heure}**")
+            ->line("Date : **{$this->matche->date_match}**")
+            ->line("Lieu : **{$this->matche->lieu}**")
             ->action('Voir les détails', url('/matchs'))
             ->line('Bonne chance aux équipes !');
     }

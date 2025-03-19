@@ -46,11 +46,7 @@
                     <td>{{ $equipe->sport->nom }}</td>
                     <td>
                         <a href="{{ route('equipes.edit', $equipe->id) }}" class="btn btn-warning">Modifier</a>
-                        <form action="{{ route('equipes.destroy', $equipe->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Supprimer</button>
-                        </form>
+                        <a href="{{ route('equipes.show', $equipe->id) }}" class="btn btn-danger">Supprimer</a>
                     </td>
                 </tr>
             @endforeach

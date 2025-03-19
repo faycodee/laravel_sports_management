@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Matche;
 use App\Models\Equipe;
+use App\Models\User;
+use App\Notifications\NouveauMatchNotification;
 use Illuminate\Http\Request;
 
 class MatchController extends Controller
@@ -43,7 +45,14 @@ class MatchController extends Controller
             'lieu' => 'required|string|max:255',
         ]);
 
-        Matche::create($request->all());
+        $matche = Matche::create($request->all());
+
+        // Envoyer la notification à tous les utilisateurs (ou à un groupe spécifique d'utilisateurs)
+        $users = User::all(); // Vous pouvez filtrer les utilisateurs selon vos besoins
+        foreach ($users as $user) {
+            $user->notify(new NouveauMatchNotification($matche));
+        }
+
         return redirect()->route('matchs.index')->with('success', 'Match ajouté avec succès.');
     }
 
@@ -52,12 +61,7 @@ class MatchController extends Controller
         return view('matchs.show', compact('match'));
     }
 
-    public function edit(Matche $match)
-    {
-        $equipes = Equipe::all();
-        return view('matchs.edit', compact('match', 'equipes'));
-    }
-
+ 
     public function update(Request $request, Matche $match)
     {
         $request->validate([

@@ -60,11 +60,7 @@
                     <td>{{ $joueur->equipe->nom }}</td>
                     <td>
                         <a href="{{ route('joueurs.edit', $joueur->id) }}" class="btn btn-warning">Modifier</a>
-                        <form action="{{ route('joueurs.destroy', $joueur->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Supprimer</button>
-                        </form>
+                        <a href="{{ route('joueurs.show', $joueur->id) }}" class="btn btn-danger">Supprimer</a>
                     </td>
                 </tr>
             @endforeach

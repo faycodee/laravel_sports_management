@@ -9,7 +9,9 @@ use App\Http\Controllers\ResultatController;
 use App\Http\Controllers\ClassementController;
 use App\Http\Controllers\AuthController;
 
-
+use App\Models\Matche;
+use App\Models\User;
+use App\Notifications\NouveauMatchNotification;
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,7 +29,14 @@ Route::resource('matchs', MatchController::class);
     Route::resource('classements', ClassementController::class);
     Route::get('/sports/{id}/confirmDelete', [SportController::class, 'confirmDelete'])->name('sports.confirmDelete');
     Route::delete('/sports/{id}', [SportController::class, 'destroy'])->name('sports.destroy');
-
+    // Route::get('/test-notification', function () {
+    //     $matche = Matche::first(); // Assurez-vous d'avoir un match dans la base de données
+    //     $user = User::first(); // Assurez-vous d'avoir un utilisateur dans la base de données
+    
+    //     $user->notify(new NouveauMatchNotification($matche));
+    
+    //     return 'Notification envoyée !';
+    // });
 });
 
 

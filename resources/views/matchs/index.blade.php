@@ -54,12 +54,8 @@
                     <td>{{ $matche->date_match }}</td>
                     <td>{{ $matche->lieu }}</td>
                     <td>
-                        <a href="{{ route('matchs.edit', $matche->id) }}" class="btn btn-warning">Modifier</a>
-                        <form action="{{ route('matchs.destroy', $matche->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Supprimer</button>
-                        </form>
+                        <a href="{{ route('matchs.edit', $matche->id )}}" class="btn btn-warning">Modifier</a>
+                        <a href="{{ route('matchs.show', $matche->id )}}" class="btn btn-danger">Supprimer</a>
                     </td>
                 </tr>
             @endforeach

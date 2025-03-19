@@ -11,10 +11,12 @@
     <!-- Navigation Bar (Optional) -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-         
+           
+
+                     @auth
             <a class="navbar-brand ms-3" href="#">Sports App (Bienvenue {{ Auth::user()->name }})</a>
             
-            @auth
+
           
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +55,7 @@
                 </ul>
             </div>
             @else
+            <a class="navbar-brand ms-3" href="#">Sports App</a>
             <a class="btn btn-outline-secondary ms-auto" href="{{ route('login') }}">Login</a>
             @endauth
         </div>
