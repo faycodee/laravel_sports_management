@@ -8,9 +8,33 @@ use Illuminate\Http\Request;
 
 class ResultatController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $resultats = Resultat::with('match')->paginate(10);
+        $query = Resultat::with('match');
+
+        // Recherche par nom d'équipe
+        if ($request->filled('nom')) {
+            $query->whereHas('match.equipe1', function ($q) use ($request) {
+                $q->where('nom', 'like', '%' . $request->nom . '%');
+            })->orWhereHas('match.equipe2', function ($q) use ($request) {
+                $q->where('nom', 'like', '%' . $request->nom . '%');
+            });
+        }
+
+        // Gestion du tri
+        $sortBy = $request->get('sort_by', 'id'); // Critère de tri (par défaut "id")
+        $sortOrder = $request->get('sort_order', 'asc'); // Ordre de tri (par défaut "asc")
+
+        if ($sortBy == 'match') {
+            $query->join('matchs', 'resultats.match_id', '=', 'matchs.id')
+                  ->orderBy('matchs.date_match', $sortOrder)
+                  ->select('resultats.*');
+        } else {
+            $query->orderBy($sortBy, $sortOrder);
+        }
+
+        $resultats = $query->paginate(10);
+
         return view('resultats.index', compact('resultats'));
     }
 
