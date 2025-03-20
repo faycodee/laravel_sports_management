@@ -2,63 +2,66 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classement;
+use App\Models\Equipe;
 use Illuminate\Http\Request;
 
 class ClassementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $classements = Classement::with('equipe')->paginate(10);
+        return view('classements.index', compact('classements'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $equipes = Equipe::all();
+        return view('classements.create', compact('equipes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'equipe_id' => 'required|exists:equipes,id',
+            'points' => 'required|integer',
+            'victoires' => 'required|integer',
+            'defaites' => 'required|integer',
+            'nuls' => 'required|integer',
+        ]);
+
+        Classement::create($request->all());
+        return redirect()->route('classements.index')->with('success', 'Classement ajouté avec succès.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Classement $classement)
     {
-        //
+        return view('classements.show', compact('classement'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Classement $classement)
     {
-        //
+        $equipes = Equipe::all();
+        return view('classements.edit', compact('classement', 'equipes'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Classement $classement)
     {
-        //
+        $request->validate([
+            'equipe_id' => 'required|exists:equipes,id',
+            'points' => 'required|integer',
+            'victoires' => 'required|integer',
+            'defaites' => 'required|integer',
+            'nuls' => 'required|integer',
+        ]);
+
+        $classement->update($request->all());
+        return redirect()->route('classements.index')->with('success', 'Classement mis à jour avec succès.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Classement $classement)
     {
-        //
+        $classement->delete();
+        return redirect()->route('classements.index')->with('success', 'Classement supprimé avec succès.');
     }
 }

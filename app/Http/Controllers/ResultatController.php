@@ -2,63 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Resultat;
+use App\Models\Matche;
 use Illuminate\Http\Request;
 
 class ResultatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $resultats = Resultat::with('match')->paginate(10);
+        return view('resultats.index', compact('resultats'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $matchs = Matche::all();
+        return view('resultats.create', compact('matchs'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'match_id' => 'required|exists:matchs,id',
+            'score_equipe1' => 'required|integer',
+            'score_equipe2' => 'required|integer',
+        ]);
+
+        Resultat::create($request->all());
+        return redirect()->route('resultats.index')->with('success', 'Résultat ajouté avec succès.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Resultat $resultat)
     {
-        //
+        return view('resultats.show', compact('resultat'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Resultat $resultat)
     {
-        //
+        $matchs = Matche::all();
+        return view('resultats.edit', compact('resultat', 'matchs'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Resultat $resultat)
     {
-        //
+        $request->validate([
+            'match_id' => 'required|exists:matchs,id',
+            'score_equipe1' => 'required|integer',
+            'score_equipe2' => 'required|integer',
+        ]);
+
+        $resultat->update($request->all());
+        return redirect()->route('resultats.index')->with('success', 'Résultat mis à jour avec succès.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Resultat $resultat)
     {
-        //
+        $resultat->delete();
+        return redirect()->route('resultats.index')->with('success', 'Résultat supprimé avec succès.');
     }
 }
