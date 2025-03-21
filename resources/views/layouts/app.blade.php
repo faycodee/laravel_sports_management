@@ -39,6 +39,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Statistiques</a>
                     </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('users.index')}}">Daschboard</a>
+                    </li>
                     <li class="nav-item">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

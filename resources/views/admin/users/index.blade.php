@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h1>Liste des Utilisateurs</h1>
-    <a href="{{ route('admin.users.create') }}" class="btn btn-primary">Ajouter un Utilisateur</a>
+    <a href="{{ route('users.create') }}" class="btn btn-primary">Ajouter un Utilisateur</a>
 
     <table class="table table-striped mt-3">
         <thead>
@@ -21,12 +21,9 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>
-                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-warning">Modifier</a>
-                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Supprimer</button>
-                        </form>
+                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning">Modifier</a>
+                        <a href="{{ route('users.show', $user->id) }}" class="btn btn-danger">Delete</a>
+                        
                     </td>
                 </tr>
             @endforeach

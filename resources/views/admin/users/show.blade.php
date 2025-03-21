@@ -11,8 +11,8 @@
         <div class="card-body">
             <h5 class="card-title">Email: {{ $user->email }}</h5>
             <p class="card-text">ID: {{ $user->id }}</p>
-            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-warning">Modifier</a>
-            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning">Modifier</a>
+            <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger">Supprimer</button>

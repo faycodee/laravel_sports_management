@@ -4,7 +4,7 @@
 <div class="container">
     <h1>Ajouter un Utilisateur</h1>
 
-    <form action="{{ route('admin.users.store') }}" method="POST">
+    <form action="{{ route('users.store') }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="name">Nom:</label>

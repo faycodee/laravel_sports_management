@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SportController;
 use App\Http\Controllers\EquipeController;
@@ -17,15 +16,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-
 // Groupes de routes protégées par l'authentification
 Route::middleware(['auth'])->group(function () {
     Route::resource('admin/users', UserController::class);
     Route::resource('sports', SportController::class);
     Route::resource('equipes', EquipeController::class);
     Route::resource('joueurs', JoueurController::class);
-Route::resource('matchs', MatchController::class);
+    Route::resource('matchs', MatchController::class);
     Route::resource('resultats', ResultatController::class);
     Route::resource('classements', ClassementController::class);
     Route::get('/sports/{id}/confirmDelete', [SportController::class, 'confirmDelete'])->name('sports.confirmDelete');
@@ -39,7 +36,6 @@ Route::resource('matchs', MatchController::class);
     //     return 'Notification envoyée !';
     // });
 });
-
 
 Route::get('login', [AuthController::class, "login"])->name("login");
 Route::post('toLogin', [AuthController::class, "toLogin"])->name("toLogin");
