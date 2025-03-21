@@ -8,7 +8,7 @@ use App\Http\Controllers\MatchController;
 use App\Http\Controllers\ResultatController;
 use App\Http\Controllers\ClassementController;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\Admin\UserController;
 use App\Models\Matche;
 use App\Models\User;
 use App\Notifications\NouveauMatchNotification;
@@ -21,6 +21,7 @@ Route::get('/', function () {
 
 // Groupes de routes protégées par l'authentification
 Route::middleware(['auth'])->group(function () {
+    Route::resource('admin/users', UserController::class);
     Route::resource('sports', SportController::class);
     Route::resource('equipes', EquipeController::class);
     Route::resource('joueurs', JoueurController::class);

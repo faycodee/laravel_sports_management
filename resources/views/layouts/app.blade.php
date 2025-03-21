@@ -11,14 +11,8 @@
     <!-- Navigation Bar (Optional) -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-           
-
-                     @auth
+          @auth
             <a class="navbar-brand ms-3" href="{{route('sports.index')}}" >Sports App (Bienvenue {{ Auth::user()->name }})</a>
-            
-
-          
-
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
