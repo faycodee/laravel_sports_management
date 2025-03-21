@@ -14,7 +14,7 @@
            
 
                      @auth
-            <a class="navbar-brand ms-3" href="#">Sports App (Bienvenue {{ Auth::user()->name }})</a>
+            <a class="navbar-brand ms-3" href="{{route('sports.index')}}" >Sports App (Bienvenue {{ Auth::user()->name }})</a>
             
 
           

@@ -8,9 +8,25 @@ use Illuminate\Http\Request;
 
 class ClassementController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $classements = Classement::with('equipe')->paginate(10);
+        $query = Classement::with('equipe');
+
+        // Recherche par nom d'équipe
+        if ($request->filled('nom')) {
+            $query->whereHas('equipe', function ($q) use ($request) {
+                $q->where('nom', 'like', '%' . $request->nom . '%');
+            });
+        }
+
+        // Gestion du tri
+        $sortBy = $request->get('sort_by', 'id'); // Critère de tri (par défaut "id")
+        $sortOrder = $request->get('sort_order', 'asc'); // Ordre de tri (par défaut "asc")
+
+        $query->orderBy($sortBy, $sortOrder);
+
+        $classements = $query->paginate(10);
+
         return view('classements.index', compact('classements'));
     }
 
