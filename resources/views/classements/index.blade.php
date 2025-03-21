@@ -54,11 +54,8 @@
                     <td>{{ $classement->nuls }}</td>
                     <td>
                         <a href="{{ route('classements.edit', $classement->id) }}" class="btn btn-warning">Modifier</a>
-                        <form action="{{ route('classements.destroy', $classement->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce classement ?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Supprimer</button>
-                        </form>
+                        <a href="{{ route('classements.show', $classement->id) }}" class="btn btn-danger">Delete</a>
+                       
                     </td>
                 </tr>
             @endforeach
