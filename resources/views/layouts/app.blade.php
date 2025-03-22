@@ -37,7 +37,7 @@
                         <a class="nav-link" href="{{ route('classements.index') }}">Classements</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Statistiques</a>
+                        <a class="nav-link" href="{{ route('statistiques.index') }}">Statistiques</a>
                     </li>
                     
                     <li class="nav-item">

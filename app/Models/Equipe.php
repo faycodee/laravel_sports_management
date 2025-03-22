@@ -20,4 +20,8 @@ class Equipe extends Model
     {
         return $this->hasMany(Joueur::class);
     }
+    public function classement()
+    {
+        return $this->hasOne(Classement::class);
+    }
 }
